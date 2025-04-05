@@ -3,7 +3,7 @@ import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 // import AgoraRTM from "agora-rtm-sdk";
 
-const URL_SERVER = "http://lolvoipserver-production.up.railway.app";
+const URL_SERVER = "https://lolvoipserver-production.up.railway.app";
 
 const appid = "dd7fa6de537b4faeb3fe895d06bf60ff";
 const token = null;
