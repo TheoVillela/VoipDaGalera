@@ -2,6 +2,9 @@ import "./style.css";
 import AgoraRTC from "agora-rtc-sdk-ng";
 import axios from "axios";
 // import AgoraRTM from "agora-rtm-sdk";
+import { inject } from "@vercel/analytics";
+
+inject();
 
 const URL_SERVER = "https://lolvoipserver-production.up.railway.app";
 
