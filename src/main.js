@@ -9,7 +9,7 @@ const appid = "dd7fa6de537b4faeb3fe895d06bf60ff";
 const token = null;
 const rtcUid = Math.floor(Math.random() * 2032);
 // const rtmUid = String(Math.floor(Math.random() * 2032));
-
+let riotPuuid = "";
 let roomId = "TEST";
 
 let audioTracks = {
@@ -157,11 +157,19 @@ const enterRoom = async (e) => {
       if (matchFound.data != null) {
         console.log(`${matchFound.data.gameId}${matchFound.data.teamId}`);
         roomId = `${matchFound.data.gameId}${matchFound.data.teamId}`;
-        initRtc();
-        // initRtm(displayName);
-        document.getElementById("room-name").innerText = "Sala: " + roomId;
-        lobbyForm.style.display = "none";
-        document.getElementById("room-header").style.display = "flex";
+
+        let userConnected = await connectUser(puuid);
+        if (userConnected.status === 200) {
+          riotPuuid = puuid;
+          initRtc();
+
+          // initRtm(displayName);
+          document.getElementById("room-name").innerText = "Sala: " + roomId;
+          lobbyForm.style.display = "none";
+          document.getElementById("room-header").style.display = "flex";
+        } else {
+          alert("Usuario ja conectado");
+        }
       } else {
         alert("Partida nao encontrada para o usuario informado.");
       }
@@ -179,7 +187,7 @@ let leaveRoom = async () => {
 
   rtcClient.unpublish();
   rtcClient.leave();
-
+  await disconnectUser(riotPuuid);
   // leaveRtmChannel();
 
   document.getElementById("form").style.display = "block";
@@ -222,3 +230,31 @@ const getPartida = async (puuid) => {
     return null;
   }
 };
+
+/////////////////----------------------------rEQUEST TRATAR USER
+
+async function connectUser(puuid) {
+  try {
+    const response = await axios.post("http://localhost:3000/connectUser", {
+      puuid: puuid, // ou só { puuid } (mais curto)
+    });
+    console.log("Conectado:", response.data);
+    return response;
+  } catch (error) {
+    console.error("Erro ao conectar:", error.response?.data || error.message);
+  }
+}
+
+async function disconnectUser(puuid) {
+  try {
+    const response = await axios.post("http://localhost:3000/disconnectUser", {
+      puuid: puuid,
+    });
+    console.log("Desconectado:", response.data);
+  } catch (error) {
+    console.error(
+      "Erro ao desconectar:",
+      error.response?.data || error.message
+    );
+  }
+}
