@@ -234,15 +234,18 @@ const getPartida = async (puuid) => {
 /////////////////----------------------------rEQUEST TRATAR USER
 
 async function connectUser(puuid) {
+  let response;
+
   try {
-    const response = await axios.post(`${URL_SERVER}/connectUser`, {
+    response = await axios.post(`${URL_SERVER}/connectUser`, {
       puuid: puuid, // ou só { puuid } (mais curto)
     });
     console.log("Conectado:", response.data);
-    return response;
   } catch (error) {
     console.error("Erro ao conectar:", error.response?.data || error.message);
   }
+
+  return response;
 }
 
 async function disconnectUser(puuid) {
