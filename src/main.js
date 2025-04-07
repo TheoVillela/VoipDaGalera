@@ -161,6 +161,8 @@ const enterRoom = async (e) => {
         let userConnected = await connectUser(puuid);
         if (userConnected.status === 200) {
           riotPuuid = puuid;
+          window.addEventListener("beforeunload", DisconnectUserOnServer);
+
           initRtc();
 
           // initRtm(displayName);
@@ -187,13 +189,17 @@ let leaveRoom = async () => {
 
   rtcClient.unpublish();
   rtcClient.leave();
-  await disconnectUser(riotPuuid);
+  await DisconnectUserOnServer();
   // leaveRtmChannel();
 
   document.getElementById("form").style.display = "block";
   document.getElementById("room-header").style.display = "none";
   document.getElementById("members").innerHTML = "";
 };
+
+async function DisconnectUserOnServer() {
+  await disconnectUser(riotPuuid);
+}
 
 lobbyForm.addEventListener("submit", enterRoom);
 
