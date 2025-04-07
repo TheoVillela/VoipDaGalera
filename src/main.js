@@ -235,7 +235,7 @@ const getPartida = async (puuid) => {
 
 async function connectUser(puuid) {
   try {
-    const response = await axios.post("http://localhost:3000/connectUser", {
+    const response = await axios.post(`${URL_SERVER}/connectUser`, {
       puuid: puuid, // ou só { puuid } (mais curto)
     });
     console.log("Conectado:", response.data);
@@ -247,7 +247,7 @@ async function connectUser(puuid) {
 
 async function disconnectUser(puuid) {
   try {
-    const response = await axios.post("http://localhost:3000/disconnectUser", {
+    const response = await axios.post(`${URL_SERVER}/disconnectUser`, {
       puuid: puuid,
     });
     console.log("Desconectado:", response.data);
